@@ -1,166 +1,94 @@
+import java.util.Random;
+import java.util.Scanner;
+
 public class Main {
 
     public static void main(String[] args) {
-        masZeroToOne();
-
-        masCycleFillin();
-
-        masDoubledNumbers();
-
-        squareMas(5);
-
-        int[] mas = {1,2,3,4,5,6,7,8,9,0};
-        int maxEl = findMaxElement(mas);
-        System.out.println(maxEl);
-
-        int[] masForCheckBalance = {1, 1, 1, 2, 1};
-        boolean isBalanced = checkBalance(masForCheckBalance);
-        System.out.println(isBalanced);
-
-        int[] masMove = {1, 2, 3, 4, 5};
-        moveMas(masMove, -1);
-
+        guessNumber();
+        guessWord();
+        taskFromTheLesson();
     }
     
-    // 1. Задать целочисленный массив, состоящий из элементов 0 и 1. 
-    // Например: [ 1, 1, 0, 0, 1, 0, 1, 1, 0, 0 ]. С помощью цикла и условия заменить 0 на 1, 1 на 0;
-    public static void masZeroToOne() {
-        int[] mas = {1, 1, 0, 0, 1, 0, 1, 1, 0, 0};
-        for (int i = 0; i < mas.length; i++) {
-            if (mas[i] == 0) {
-                mas[i] = 1;
+    // 1. Написать программу, которая загадывает случайное число от 0 до 9, и пользователю дается 3 попытки
+    // угадать это число. При каждой попытке компьютер должен сообщить больше ли указанное пользователем число
+    // чем загаданное, или меньше. После победы или проигрыша выводится запрос – «Повторить игру еще раз?
+    // 1 – да / 0 – нет»(1 – повторить, 0 – нет).
+    public static void guessNumber() {
+        Scanner scanner = new Scanner(System.in);
+        boolean game = true;
+        while (game) {
+            int randomNumber = new Random().nextInt(9);
+            for (int i = 0; i < 3; i++) {
+                int enteredNumber = scanner.nextInt();
+                if (enteredNumber == randomNumber) {
+                    System.out.println("Победа!");
+                    break;
+                }
+                if (enteredNumber > randomNumber) {
+                    System.out.println("Загаданное число меньше");
+                }
+                if (enteredNumber < randomNumber) {
+                    System.out.println("Загаданное число больше");
+                }
+            }
+            System.out.println("Повторить игру еще раз? 1 – да / 0 – нет");
+            int answer = scanner.nextInt();
+            switch (answer){
+                case (1):
+                    break;
+                case (0):
+                    game = false;
+                    break;
+                default:
+                    System.out.println("Некорректный ответ");
+                    break;
+            }
+        }
+    }
+
+    // 2 * Создать массив из слов
+    // При запуске программы компьютер загадывает слово, запрашивает ответ у пользователя,
+    // сравнивает его с загаданным словом и сообщает правильно ли ответил пользователь.
+    // Если слово не угадано, компьютер показывает буквы которые стоят на своих местах.
+    public static void guessWord() {
+        Scanner scanner = new Scanner(System.in);
+        boolean game = true;
+        String[] words = {"apple", "orange", "lemon", "banana", "apricot", "avocado", "broccoli", "carrot", "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea", "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
+        String randomWord = words[new Random().nextInt(words.length-1)];
+        while (game) {
+            String enteredWord = scanner.next();
+            if (enteredWord.equals(randomWord)) {
+                System.out.println("Победа!");
+                game = false;
             } else {
-                mas[i] = 0;
-            }
-        }
-
-        for (int element:mas) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
-    }
-
-    //2. Задать пустой целочисленный массив размером 8.
-    // С помощью цикла заполнить его значениями 0 3 6 9 12 15 18 21;
-    public static void masCycleFillin() {
-        int[] mas = new int [8];
-        for (int i = 0; i < mas.length; i++) {
-            mas[i] = i*3;
-        }
-
-        for (int element:mas) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
-    }
-
-    //3. Задать массив [ 1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1 ]
-    // пройти по нему циклом, и числа меньшие 6 умножить на 2;
-    public static void masDoubledNumbers() {
-        int[] mas = {1, 5, 3, 2, 11, 4, 5, 2, 4, 8, 9, 1};
-        for (int i = 0; i < mas.length; i++) {
-            if (mas[i] < 6) {
-                mas[i] *= 2;
-            }
-        }
-
-        for (int element:mas) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
-    }
-
-    // 4. Создать квадратный двумерный целочисленный массив (количество строк и столбцов одинаковое),
-    // и с помощью цикла(-ов) заполнить его диагональные элементы единицами;
-    public static void squareMas(int n) {
-        int[][] mas = new int[n][n];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == j || i+j == n-1) {
-                    mas[i][j] = 1;
+                StringBuilder hint = new StringBuilder("###############");
+                for (int i = 0; i < Math.min(enteredWord.length(), randomWord.length()); i++) {
+                    if (enteredWord.charAt(i) == randomWord.charAt(i)) {
+                        hint.setCharAt(i, randomWord.charAt(i));
+                    }
                 }
+                System.out.println(hint);
             }
         }
-
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                System.out.print(mas[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 
-    // 5. ** Задать одномерный массив и найти в нем минимальный и максимальный элементы (без помощи интернета);
-    public static int findMaxElement(int[] mas) {
-        int max = mas[0];
-        for (int i = 1; i < mas.length; i++) {
-            if (mas[i] > max) max = mas[i];
-        }
-        return max;
-    }
+    // 3. Задачка с лекции
+    public static void taskFromTheLesson() {
+        String s = "Предложение     один  Теперь     предложение    два   Тут  предложение          три";
 
-    // 6. ** Написать метод, в который передается не пустой одномерный целочисленный массив, метод должен вернуть true,
-    // если в массиве есть место, в котором сумма левой и правой части массива равны.
-    // Примеры: checkBalance([2, 2, 2, 1, 2, 2, || 10, 1]) → true, checkBalance([1, 1, 1, || 2, 1]) → true,
-    // граница показана символами ||, эти символы в массив не входят.
-    public static boolean checkBalance(int[] mas) {
-        int leftSum = 0;
-        int rightSum = 0;
-        for (int i = 0; i < mas.length; i++) {
-            int[] leftMas = new int [i+1];
-            int[] rightMas = new int[mas.length - i - 1];
+        System.out.println(s);
+        String s1 = s.replaceAll(" +", " ");
 
-
-            for (int j = 0; j < mas.length; j++) {
-//                do {
-//                    leftMas[j] = mas[j];
-//                } while (i < j);
-                if (i >= j) {
-                    leftMas[j] = mas[j];
-                } else {
-                    rightMas[j - i - 1] = mas[j];
-                }
-            }
-            leftSum = sum(leftMas);
-            rightSum = sum(rightMas);
-            if (leftSum == rightSum) return true;
-        }
-        return false;
-    }
-
-    public static int sum(int[] mas) {
-        int sum = 0;
-        for (int i = 0; i < mas.length; i++) {
-            sum = sum + mas[i];
-        }
-        return sum;
-    }
-
-    // 7. **** Написать метод, которому на вход подается одномерный массив и число n (может быть положительным,
-    // или отрицательным), при этом метод должен сместить все элементымассива на n позиций.
-    // Для усложнения задачи нельзя пользоваться вспомогательными массивами.
-    public static void moveMas(int[] mas, int n) {
-        for (int i = 0; i < Math.abs(n); i++) {
-            if (n>0) {
-                int temp = mas[mas.length - 1];
-                for (int j = mas.length - 1; j > 0; j--) {
-                    mas[j] = mas[j - 1];
-                }
-                mas[0] = temp;
-            }
-            if (n<0){
-                int temp = mas[0];
-                for (int j = 0; j < mas.length - 1; j++) {
-                    mas[j] = mas[j + 1];
-                }
-                mas[mas.length - 1] = temp;
+        StringBuilder s2 = new StringBuilder(s1);
+        int n = 0;
+        for (int i = 1; i < s1.length(); i++) {
+            if (s2.charAt(i) >= 'А' && s2.charAt(i) <= 'Я') {
+                s2.insert(i - 1, ".");
+                i++;
             }
         }
+        s2.append('.');
 
-        for (int element:mas) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
+        System.out.println(s2);
     }
 }
