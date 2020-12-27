@@ -1,38 +1,18 @@
-public class Cat extends Animal {
-    private double maxRun = 200;
-    private double maxJump = 2;
-    private double maxSwim = 0;
+public class Cat {
+    private String name;
+    private int appetite;
+    private boolean isFed;
 
-    public void setMaxRun(double maxRun) {
-        this.maxRun = maxRun;
+    public Cat(String name, int appetite) {
+        this.name = name;
+        this.appetite = appetite;
+        this.isFed = false;
     }
 
-    public void setMaxJump(double maxJump) {
-        this.maxJump = maxJump;
+    public void eat(Plate p) {
+        if (p.decreaseFood(appetite)) this.isFed = true;
     }
-
-    public void setMaxSwim(double maxSwim) {
-        this.maxSwim = maxSwim;
-    }
-
-    @Override
-    public void run(double length) {
-        boolean canDo = false;
-        if (maxRun >= length) canDo = true;
-        System.out.println("run: " + canDo);
-    }
-
-    @Override
-    public void swim(double length) {
-        boolean canDo = false;
-        if (maxSwim >= length) canDo = true;
-        System.out.println("run: " + canDo);
-    }
-
-    @Override
-    public void jump(double height) {
-        boolean canDo = false;
-        if (maxJump >= height) canDo = true;
-        System.out.println("run: " + canDo);
+    String getName(){
+        return name;
     }
 }
