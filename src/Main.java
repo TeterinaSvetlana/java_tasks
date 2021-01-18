@@ -1,38 +1,48 @@
 public class Main {
     public static void main(String[] args) {
-        Cat cat1 = new Cat(20,5);
-        Human human1 = new Human(10,3);
-        Robot robot1 = new Robot(200,10);
+        String [][] arr = {{"'","2","3","4"},
+                            {"1","2","3","4"},
+                            {"1","2","3","4"},
+                           {"1","2","3","4"}};
 
-        Contestant[] contestants = {cat1,human1, robot1};
+        try {
+            System.out.println(getArrAndSum(arr));
 
-        Wall w1 = new Wall(1);
-        Wall w2 = new Wall(2);
-        Wall w3 = new Wall(5);
+        } catch (MyArraySizeException e) {
+            e.printStackTrace();
+        } catch (MyArrayDataException e) {
+            e.printStackTrace();
+        }
+    }
 
-        RunningTrack rt1 = new RunningTrack(5);
-        RunningTrack rt2 = new RunningTrack(12);
-        RunningTrack rt3 = new RunningTrack(50);
+    public static int getArrAndSum(String [][] arr) throws MyArraySizeException, MyArrayDataException {
+        int sum = 0;
 
-        Barrier[] barriers = {w1, rt1, w2, rt2, w3, rt3};
-
-        for (Contestant contestant:contestants) {
-            for (Barrier barrier:barriers) {
-                try {
-                    Wall b = (Wall)barrier;
-                    contestant.jump();
-                    if (!b.isSuccessful(contestant.getMaxJump())){
-                        break;
-                    }
-                } catch (Exception e) {
-                    RunningTrack b = (RunningTrack)barrier;
-                    contestant.run();
-                    if (!b.isSuccessful(contestant.getMaxRun())){
-                        break;
-                    }
-                }
-
+        try {
+            if (arr.length != 4)
+                throw new MyArraySizeException();
+            for (int i = 0; i < arr.length; i++) {
+                if (arr[i].length != 4)
+                    throw new MyArraySizeException();
             }
         }
+        catch(MyArraySizeException e)
+        {
+            System.out.println("Exception: "+e.toString());
+        }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+
+                try {
+                    sum += Integer.parseInt(arr[i][j]);
+                }
+                catch(NumberFormatException e)
+                {
+                    throw new MyArrayDataException("Data error on " + i + " " + j, i, j);
+                }
+            };
+        }
+        return sum;
     }
 }
