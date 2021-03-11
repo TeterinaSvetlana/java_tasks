@@ -1,6 +1,4 @@
 
-//import com.sun.istack.internal.NotNull;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,7 +13,6 @@ public class TestManager {
     public static void main(String[] args) {
         start(TestCollection.class);
         clearFields();
-//        start(TestCollection.class.getName());
     }
 
     private static void start(Class testedClass) {
@@ -71,7 +68,7 @@ public class TestManager {
     }
 
     private static void invokeMethods() {
-        String str1 = "this i string";
+        String str1 = "this is string";
         int number = 123;
         boolean bool = true;
         try {
@@ -79,10 +76,17 @@ public class TestManager {
             testMethodsOrdered.forEach((method) -> {
                 Class[] type = method.getParameterTypes();
                 System.out.printf("Priority: %d. Action: ", method.getAnnotation(Test.class).priority());
-                try {
+                if (type.length == 0) try {
+                    method.invoke(testCollection);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } else try {
                     Class currentType = type[0];
                     if (currentType == boolean.class) method.invoke(testCollection, bool);
                     else if (currentType == String.class) method.invoke(testCollection, str1);
+                    else if (currentType == int.class) method.invoke(testCollection, number);
                 } catch (IllegalAccessException | InvocationTargetException e) {
                     e.printStackTrace();
                 }

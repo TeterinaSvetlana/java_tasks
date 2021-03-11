@@ -11,8 +11,8 @@ public class TestCollection {
     }
 
     @Test(priority = Priority.p10)
-    private void test() {
-        System.out.println("this is p10");
+    private void test(boolean bool) {
+        System.out.println("this is p10 and the bool is: " + bool);
     }
 
     @Test(priority = Priority.p4)
@@ -23,6 +23,11 @@ public class TestCollection {
     @Test
     private void test(String string) {
         System.out.println("this is p5 and the string is: " + string);
+    }
+
+    @Test(priority = Priority.p10)
+    private void test() {
+        System.out.println("this is p10 and the parameter is null");
     }
 
     @AfterSuite
